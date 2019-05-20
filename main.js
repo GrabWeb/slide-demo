@@ -1,19 +1,17 @@
-let n
-初始化()
+    
+$('.images > img:nth-child(1)').addClass('current')
+$('.images > img:nth-child(2)').addClass('enter')
+$('.images > img:nth-child(3)').addClass('enter')
+let n = 1
 setInterval(()=>{
-  makeLeave(getImage(n))
-    .one('transitionend', (e)=>{
-      makeEnter($(e.currentTarget))
+  $(`.images > img:nth-child(${x(n)})`).removeClass('current').addClass('leave')
+    .one('transitionend', (e)=>{//one方法仅
+      $(e.currentTarget).removeClass('leave').addClass('enter')
     })
-  makeCurrent(getImage(n+1))
+  $(`.images > img:nth-child(${x(n+1)})`).removeClass('enter').addClass('current')
   n += 1
 },3000)
 
-// 封装函数
-
-function getImage(n){
-  return $(`.images > img:nth-child(${x(n)})`)
-}
 
 function x(n){
   if(n>3){
@@ -23,20 +21,4 @@ function x(n){
     }
   } // n = 1 2 3
   return n
-}
-
-function 初始化(){
-  n = 1
-  $(`.images > img:nth-child(${n})`).addClass('current')
-    .siblings().addClass('enter')
-}
-
-function makeCurrent($node){
-  return $node.removeClass('enter leave').addClass('current')
-}
-function makeLeave($node){
-  return $node.removeClass('enter current').addClass('leave')
-}
-function makeEnter($node){
-  return $node.removeClass('leave current').addClass('enter')
 }
