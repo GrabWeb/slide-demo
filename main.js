@@ -1,24 +1,44 @@
-    
-$('.images > img:nth-child(1)').addClass('current')
-$('.images > img:nth-child(2)').addClass('enter')
-$('.images > img:nth-child(3)').addClass('enter')
-let n = 1
-setInterval(()=>{
-  $(`.images > img:nth-child(${x(n)})`).removeClass('current').addClass('leave')
-    .one('transitionend', (e)=>{//one方法仅
-      $(e.currentTarget).removeClass('leave').addClass('enter')
-    })
-  $(`.images > img:nth-child(${x(n+1)})`).removeClass('enter').addClass('current')
-  n += 1
-},3000)
+let $buttons = $('# buttonWrapper>button')
+let $slides = $('#slides')
+let $images = $slides.children('img')
+let $firstCopy = $images.eq(0).clone(true)//true表示子元素一起克隆
+let $lastCopy = $images.eq($images.length-1).clone(true)
 
+$slides.append($firstCopy)
+$slides.prepend($lastCopy)
 
-function x(n){
-  if(n>3){
-    n = n%3
-    if (n===0){
-      n =3
+$slides.css({transform: 'translateX(-400px)'})
+
+let current = 0
+
+$buttons.eq(0).on('click', function(){
+    if(current == 2){
+        console.log('说明你是从最后一张到第一张')
+        $slides.css({transform: 'translateX(-1600px)'})
+        .one('transitionend', function(){
+            $slides.hide()
+                .offset()
+            $slides.css({transform: 'translateX(-400px)'}).show()
+        })
     }
-  } // n = 1 2 3
-  return n
-}
+    $slides.css({transform: 'translateX(-400px)'})
+    current = 0
+})
+$buttons.eq(1).on('click', function(){
+    console.log(current)
+    $slides.css({transform: 'translateX(-800px)'})
+    current = 1
+})
+$buttons.eq(2).on('click', function(){
+    if(current == 0){
+        console.log('说明你是从最后一张到第一张')
+        $slides.css({transform: 'translateX(0px)'})
+        .one('transitionend', function(){
+            $slides.hide()
+                .offset()
+            $slides.css({transform: 'translateX(-1200px)'}).show()
+        })
+    }
+    $slides.css({transform: 'translateX(-1200px)'})
+    current = 2
+})
